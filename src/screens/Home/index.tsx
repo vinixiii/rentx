@@ -9,21 +9,12 @@ import {
   Container,
   Header,
   HeaderContent,
-  TotalCars
+  TotalCars,
+  CarList
 } from './styles';
 
 export function Home() {
   const car = {
-    brand: 'Audi',
-    name: 'RS 5 Coupé',
-    rent: {
-      period: 'Ao dia',
-      price: 120,
-    },
-    thumbnail: 'https://production.autoforce.com/uploads/version/profile_image/3188/model_main_comprar-tiptronic_87272c1ff1.png',    
-  };
-
-  const car2 = {
     brand: 'Porshe',
     name: 'Panamera',
     rent: {
@@ -48,8 +39,11 @@ export function Home() {
         </HeaderContent>
       </Header>
 
-      <CarCard data={car} />
-      <CarCard data={car2} />
+      <CarList
+        data={[1, 2, 3, 4, 5, 6, 7]}
+        keyExtractor={item => String(item)}
+        renderItem={({ item }) => <CarCard data={car} />}
+      />  
     </Container>
   );
 };
