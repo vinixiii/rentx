@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled(GestureHandlerRootView)`
@@ -76,8 +76,9 @@ export const About = styled.Text`
   font-size: ${RFValue(15)}px;
   color: ${({ theme }) => theme.colors.text};
   text-align: justify;
-  margin-top: 24px;
   line-height: ${RFValue(25)}px;
+  margin-top: 24px;
+  margin-bottom: 38px;
 `;
 
 export const Accessories = styled.View`
@@ -88,4 +89,10 @@ export const Accessories = styled.View`
   justify-content: space-between;
   margin-top: 16px;
   margin-right: -12px;
+`;
+
+export const Footer = styled.View`
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.secondaryBackground};
+  padding: 24px 24px ${getBottomSpace() + 24}px;
 `;
