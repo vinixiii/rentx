@@ -66,7 +66,7 @@ export const DateValue = styled.Text`
 export const Content = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
-    padding: 24,
+    paddingBottom: 24,
   },
 })``;
 
