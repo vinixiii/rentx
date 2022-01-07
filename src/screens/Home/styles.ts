@@ -1,6 +1,9 @@
 import styled from 'styled-components/native';
+import { FlatList, FlatListProps } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
+
+import { ICarDTO } from '../../dtos/ICarDTO';
 
 export const Container = styled(GestureHandlerRootView)`
   flex: 1;
@@ -27,7 +30,9 @@ export const TotalCars = styled.Text`
   color: ${({ theme }) => theme.colors.textDetail};
 `;
 
-export const CarList = styled.FlatList.attrs({
+export const CarList = styled(
+    FlatList as new (props: FlatListProps<ICarDTO>) => FlatList<ICarDTO>
+  ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     padding: 24,
