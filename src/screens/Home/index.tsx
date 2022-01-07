@@ -1,6 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useNavigation } from '@react-navigation/native';
 
 import Logo from '../../assets/logo.svg';
 import { CarCard } from '../../components/CarCard';
@@ -14,6 +15,8 @@ import {
 } from './styles';
 
 export function Home() {
+  const navigation = useNavigation();
+
   const car = {
     brand: 'Porshe',
     name: 'Panamera',
@@ -22,6 +25,10 @@ export function Home() {
       price: 340,
     },
     thumbnail: 'https://cdn.picpng.com/porsche/porsche-view-29291.png',  
+  };
+
+  function handleShowCarDetails() {
+    navigation.navigate('CarDetails');
   };
 
   return(
@@ -42,8 +49,10 @@ export function Home() {
       <CarList
         data={[1, 2, 3, 4, 5, 6, 7]}
         keyExtractor={item => String(item)}
-        renderItem={({ item }) => <CarCard data={car} />}
-      />  
+        renderItem={({ item }) =>
+          <CarCard data={car} onPress={handleShowCarDetails} />
+        }
+      />
     </Container>
   );
 };
