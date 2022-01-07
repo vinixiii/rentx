@@ -17,12 +17,15 @@ import {
   Type,
   CarImage
 } from './styles';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
 interface ICarCardProps extends RectButtonProps {
   data: ICarDTO;
 };
 
 export function CarCard({ data, ...rest } : ICarCardProps) {
+  const MotorIcon = getAccessoryIcon(data.fuel_type);
+
   return(
     <Container {...rest}>
       <Details>
@@ -36,7 +39,7 @@ export function CarCard({ data, ...rest } : ICarCardProps) {
           </Rent>
 
           <Type>
-            <GasolineSvg />
+            <MotorIcon />
           </Type>
         </About>
       </Details>
