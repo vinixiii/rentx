@@ -1,4 +1,4 @@
-export interface ICarDTO {
+export type ICarDTO = {
   id: string;
   brand: string;
   name: string;
