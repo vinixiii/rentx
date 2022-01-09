@@ -37,7 +37,7 @@ export function CarDetails() {
   const { car } = route.params as IParams;
 
   function handleShowRentalPeriodChoice() {
-    navigation.navigate('Scheduling');
+    navigation.navigate('Scheduling', { car });
   };
 
   function handleGoBack() {
