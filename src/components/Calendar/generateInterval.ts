@@ -23,6 +23,5 @@ export function generateInterval(start: IDateDataProps, end: IDateDataProps) {
       };
     });
 
-  console.log(interval);
   return interval;
 };

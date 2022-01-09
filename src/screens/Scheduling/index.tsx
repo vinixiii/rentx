@@ -47,7 +47,7 @@ export function Scheduling() {
   const [lastSelectedDate, setLastSelectedDate] = useState({} as IDateDataProps);
   const [markedDates, setMarkedDates] = useState({} as IMarkedDateProps);
   const [rentalPeriod, setRentalPeriod] = useState({} as IRentalPeriod);
-  const dates = Object.keys(markedDates);
+  
   function handleConfirmRentalPeriod() {
     if(!rentalPeriod.start || !rentalPeriod.end) {
       Alert.alert('Selecione um período para o aluguel do carro.');

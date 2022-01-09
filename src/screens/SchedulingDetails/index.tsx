@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { format } from 'date-fns';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
@@ -11,6 +13,8 @@ import { Button } from '../../components/Button';
 
 import { ICarDTO } from '../../dtos/ICarDTO';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
+import { getPlatformDate } from '../../utils/getPlatformDate';
+import { api } from '../../services/api';
 
 import {
   Container,
@@ -37,8 +41,6 @@ import {
   RentalPriceTotal,
   Footer
 } from './styles';
-import { format } from 'date-fns';
-import { getPlatformDate } from '../../utils/getPlatformDate';
 
 interface IParams {
   car: ICarDTO;
@@ -61,8 +63,22 @@ export function SchedulingDetails() {
 
   const rentTotal = Number(dates.length * car.rent.price);
 
-  function handleConfirmRental() {
-    navigation.navigate('SchedulingComplete');
+  async function handleConfirmRental() {
+    try {
+      const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);      
+      const unavaiableDates = [
+        ...schedulesByCar.data.unavailable_dates,
+        ...dates
+      ];
+      
+      api.put(`/schedules_bycars/${car.id}`, {
+        id: car.id,
+        unavailable_dates: unavaiableDates,
+      }).then(() => navigation.navigate('SchedulingComplete'));
+    } catch (error) {
+      console.error(`file: src/screens/SchedulingDetails\nfunction: handleConfirmRental\nerror: ${error as string}`);
+      Alert.alert('Não foi possível alugar o carro.');
+    }
   };
 
   function handleGoBack() {
