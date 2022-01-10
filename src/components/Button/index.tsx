@@ -24,10 +24,6 @@ export function Button({
 } : IButtonProps) {
   const theme = useTheme();
 
-  console.log('----------');
-  console.log('isEnabled:', isEnabled);
-  console.log('isLoading:', isLoading);
-
   return(
     <Container
       color={color}
