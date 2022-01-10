@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useTheme } from 'styled-components';
 import { Alert, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { CarCard } from '../../components/CarCard';
 import { Loading } from '../../components/Loading';
@@ -16,17 +18,23 @@ import {
   Header,
   HeaderContent,
   TotalCars,
-  CarList
+  CarList,
+  MyCarsButton
 } from './styles';
 
 export function Home() {
   const navigation = useNavigation();
+  const theme = useTheme();
 
   const [isLoading, setIsLoading] = useState(false);
   const [carList, setCarList] = useState<ICarDTO[]>([]);
 
   function handleShowCarDetails(car: ICarDTO) {
     navigation.navigate('CarDetails', { car });
+  };
+
+  function handleShowMyCars() {
+    navigation.navigate('MyCars');
   };
 
   useEffect(() => {
@@ -65,13 +73,22 @@ export function Home() {
         isLoading 
         ? <Loading />
         : 
-        <CarList
-          data={carList}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) =>
-            <CarCard data={item} onPress={() => handleShowCarDetails(item)} />
-          }
-        />
+        <>
+          <CarList
+            data={carList}
+            keyExtractor={item => String(item.id)}
+            renderItem={({ item }) =>
+              <CarCard data={item} onPress={() => handleShowCarDetails(item)} />
+            }
+          />
+          <MyCarsButton onPress={handleShowMyCars}>
+            <Ionicons
+              name="ios-car-sport"
+              size={32}
+              color={theme.colors.shape}
+            />
+          </MyCarsButton>
+        </>
       }
     </Container>
   );

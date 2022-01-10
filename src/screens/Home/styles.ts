@@ -1,13 +1,13 @@
 import styled from 'styled-components/native';
 import { FlatList, FlatListProps } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import { ICarDTO } from '../../dtos/ICarDTO';
 
 export const Container = styled(GestureHandlerRootView)`
   flex: 1;
-  background-color: ${({theme}) => theme.colors.primaryBackground};
+  background-color: ${({ theme }) => theme.colors.primaryBackground};
 `;
 
 export const Header = styled.View`
@@ -31,10 +31,22 @@ export const TotalCars = styled.Text`
 `;
 
 export const CarList = styled(
-    FlatList as new (props: FlatListProps<ICarDTO>) => FlatList<ICarDTO>
-  ).attrs({
+  FlatList as new (props: FlatListProps<ICarDTO>) => FlatList<ICarDTO>
+).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     padding: 24,
   },
 })``;
+
+export const MyCarsButton = styled(RectButton)`
+  width: 60px;
+  height: 60px;
+  background-color: ${({ theme }) => theme.colors.main};
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+`;
