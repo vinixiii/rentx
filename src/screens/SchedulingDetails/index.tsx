@@ -59,12 +59,14 @@ export function SchedulingDetails() {
   const route = useRoute();
   const { car, dates } = route.params as IParams;
 
+  const [isLoading, setIsLoading] = useState(false);
   const [rentalPeriod, setRentalPeriod] = useState({} as IRentalPeriod);
 
   const rentTotal = Number(dates.length * car.rent.price);
 
   async function handleConfirmRental() {
     try {
+      setIsLoading(true);
       const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);      
       const unavaiableDates = [
         ...schedulesByCar.data.unavailable_dates,
@@ -85,6 +87,7 @@ export function SchedulingDetails() {
     } catch (error) {
       console.error(`file: src/screens/SchedulingDetails\nfunction: handleConfirmRental\nerror: ${error as string}`);
       Alert.alert('Não foi possível alugar o carro.');
+      setIsLoading(false);
     }
   };
 
@@ -174,6 +177,8 @@ export function SchedulingDetails() {
           title="Confirmar"
           color={theme.colors.success}
           onPress={handleConfirmRental}
+          isEnabled={!isLoading}
+          isLoading={isLoading}
         />
       </Footer>
     </Container>
