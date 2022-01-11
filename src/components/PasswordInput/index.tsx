@@ -20,7 +20,7 @@ export function PasswordInput({
 } : IInputProps) {
   const theme = useTheme();
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(true);
 
   function handleChangePasswordVisibility() {
     setIsPasswordVisible(!isPasswordVisible);
