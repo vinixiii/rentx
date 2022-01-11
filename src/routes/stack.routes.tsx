@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Splash } from '../screens/Splash';
+import { SignIn } from '../screens/SignIn';
 import { Home } from '../screens/Home';
 import { MyCars } from '../screens/MyCars';
 import { CarDetails } from '../screens/CarDetails';
@@ -17,11 +18,15 @@ export function StackRoutes() {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="Splash"
+      initialRouteName="SignIn"
     >
       <Screen
         name="Splash"
         component={Splash}
+      />
+      <Screen
+        name="SignIn"
+        component={SignIn}
       />
       <Screen
         name="Home"

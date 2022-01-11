@@ -6,7 +6,11 @@ interface IButtonProps {
   color?: string;
 }
 
-export const Container = styled(RectButton)<IButtonProps>`
+interface ITextProps {
+  isLight?: boolean;
+}
+
+export const Container = styled(RectButton) <IButtonProps>`
   width: 100%;
   padding: 18px;
   justify-content: center;
@@ -16,8 +20,8 @@ export const Container = styled(RectButton)<IButtonProps>`
   };
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text<ITextProps>`
   font-family: ${({ theme }) => theme.fonts.primary500};
   font-size: ${RFValue(15)}px;
-  color: ${({ theme }) => theme.colors.shape};
+  color: ${({ theme, isLight }) => isLight ? theme.colors.title : theme.colors.shape};
 `;

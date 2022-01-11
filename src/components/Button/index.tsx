@@ -13,6 +13,7 @@ interface IButtonProps extends RectButtonProps {
   color?: string;
   isEnabled?: boolean;
   isLoading?: boolean;
+  isLight?: boolean;
 }
 
 export function Button({
@@ -20,6 +21,7 @@ export function Button({
   color,
   isEnabled = true,
   isLoading = false,
+  isLight = false,
   ...rest
 } : IButtonProps) {
   const theme = useTheme();
@@ -34,7 +36,7 @@ export function Button({
       {
         isLoading
         ? <ActivityIndicator color={theme.colors.shape} />
-        : <Title>{title}</Title>
+        : <Title isLight={isLight}>{title}</Title>
       }
     </Container>
   );
