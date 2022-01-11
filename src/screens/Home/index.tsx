@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
-import { Alert, StatusBar, StyleSheet, Dimensions } from 'react-native';
+import { Alert, StatusBar, StyleSheet, BackHandler } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
@@ -29,12 +29,12 @@ import {
 } from './styles';
 
 const AnimatedButton = Animated.createAnimatedComponent(RectButton);
-const WIDTH = Dimensions.get('window').width;
-const HEIGHT = Dimensions.get('window').height;
 
 export function Home() {
-  const navigation = useNavigation();
   const theme = useTheme();
+  const navigation = useNavigation();
+
+  
 
   const [isLoading, setIsLoading] = useState(false);
   const [carList, setCarList] = useState<ICarDTO[]>([]);
@@ -91,6 +91,11 @@ export function Home() {
     getCars();
   }, []);
 
+  useEffect(() => navigation.addListener('beforeRemove', (e) => {
+    e.preventDefault();
+    return;
+  }), [navigation]);
+
   return(
     <Container>
       <StatusBar
@@ -102,7 +107,7 @@ export function Home() {
       <Header>
         <HeaderContent>
           <Logo width={RFValue(108)} height={RFValue(12)} />
-          <TotalCars>Total de {carList.length} carros</TotalCars>
+          {!isLoading && <TotalCars>Total de {carList.length} carros</TotalCars>}          
         </HeaderContent>
       </Header>
 
