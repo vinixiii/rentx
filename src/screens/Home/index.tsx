@@ -13,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { CarCard } from '../../components/CarCard';
-import { Loading } from '../../components/Loading';
+import { AnimatedLoading } from '../../components/AnimatedLoading';
 
 import { api } from '../../services/api';
 import { ICarDTO } from '../../dtos/ICarDTO';
@@ -113,7 +113,7 @@ export function Home() {
 
       {
         isLoading 
-        ? <Loading />
+        ? <AnimatedLoading />
         : 
         <>
           <CarList

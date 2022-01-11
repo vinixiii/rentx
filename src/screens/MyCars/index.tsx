@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { BackButton } from '../../components/BackButton';
 import { CarCard } from '../../components/CarCard';
-import { Loading } from '../../components/Loading';
+import { AnimatedLoading } from '../../components/AnimatedLoading';
 
 import { ICarDTO } from '../../dtos/ICarDTO';
 import { api } from '../../services/api';
@@ -88,7 +88,7 @@ export function MyCars() {
 
         {
           isLoading
-          ? <Loading />
+          ? <AnimatedLoading />
           :
           <Content>
             <Appointments>
