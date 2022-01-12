@@ -1,11 +1,12 @@
 declare namespace ReactNavigation {
   type ICarDTO = import('../../../dtos/ICarDTO').ICarDTO;
   type IMarkedDateProps = import('../../../components/Calendar').IMarkedDateProps;
+  type ISignUpSecondStepParams = import('../../../screens/SignUp/SignUpSecondStep').ISignUpSecondStepParams;
 
   export interface RootParamList {
     SignIn: undefined;
     SignUpFirstStep: undefined;
-    SignUpSecondStep: undefined;
+    SignUpSecondStep: ISignUpSecondStepParams;
     Home: undefined;
     MyCars: undefined;
     CarDetails: { car: ICarDTO } | undefined;

@@ -1,7 +1,8 @@
-import React from 'react';
-import { Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
+import * as yup from 'yup';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
@@ -22,13 +23,37 @@ export function SignUpFirstStep() {
   const theme = useTheme();
   const navigation = useNavigation();
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [driverLicense, setDriverLicense] = useState('');
+
+  const schema = yup.object().shape({
+    driverLicense: yup
+      .string()
+      .required('A CNH é obrigatória.'),
+    email: yup
+      .string()
+      .required('O email é obrigatório.')
+      .email('Digite um email válido!'),
+    name: yup
+      .string()
+      .required('O nome é obrigatório.'),
+  });
+
   function handleGoBack() {
     navigation.goBack();
-  }
+  };
 
-  function handleNextStep() {
-    navigation.navigate('SignUpSecondStep');
-  }
+  async function handleNextStep() {
+    try {
+      const data = { name, email, driverLicense };
+      await schema.validate(data);
+
+      navigation.navigate('SignUpSecondStep', { user: data });
+    } catch (error: any) {
+      if(error instanceof yup.ValidationError) Alert.alert('Oops!', error.message); 
+    }
+  };
 
   return(
     <KeyboardAvoidingView behavior="position" enabled>
@@ -51,6 +76,8 @@ export function SignUpFirstStep() {
               iconName="user"
               placeholder="Nome"
               placeholderTextColor={theme.colors.textDetail}
+              onChangeText={setName}
+              value={name}
             />
             <Input
               iconName="mail"
@@ -58,12 +85,16 @@ export function SignUpFirstStep() {
               placeholderTextColor={theme.colors.textDetail}
               keyboardType="email-address"
               autoCapitalize="none"
+              onChangeText={setEmail}
+              value={email}
             />
             <Input
               iconName="credit-card"
               placeholder="CNH"
               placeholderTextColor={theme.colors.textDetail}
               keyboardType="numeric"
+              onChangeText={setDriverLicense}
+              value={driverLicense}
             />
           </Form>
           <Button
