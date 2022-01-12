@@ -8,6 +8,7 @@ interface IProps {
 
 export const Container = styled.View`
   flex-direction: row;
+  margin-bottom: 8px;
 `;
 
 export const IconWrapper = styled.View<IProps>`

@@ -3,6 +3,9 @@ declare namespace ReactNavigation {
   type IMarkedDateProps = import('../../../components/Calendar').IMarkedDateProps;
 
   export interface RootParamList {
+    SignIn: undefined;
+    SignUpFirstStep: undefined;
+    SignUpSecondStep: undefined;
     Home: undefined;
     MyCars: undefined;
     CarDetails: { car: ICarDTO } | undefined;
