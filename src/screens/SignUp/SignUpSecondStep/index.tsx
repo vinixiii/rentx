@@ -48,6 +48,12 @@ export function SignUpSecondStep() {
     if(password !== confirmPassword) {
       return Alert.alert('Oops', 'As senhas precisam ser iguais.')
     }
+
+    navigation.navigate('Confirmation', {
+      title: 'Conta criada!',
+      message: 'Agora é só fazer login\ne aproveitar',
+      nextScreenRouteName: 'SignIn'
+    })
   }
 
   return(

@@ -83,7 +83,11 @@ export function SchedulingDetails() {
       api.put(`/schedules_bycars/${car.id}`, {
         id: car.id,
         unavailable_dates: unavaiableDates,
-      }).then(() => navigation.navigate('SchedulingComplete'));
+      }).then(() => navigation.navigate('Confirmation', {
+        title: 'Carro alugado!',
+        message: 'Agora você só precisa ir\naté a concessionária da RENTX\npegar o seu automóvel.',
+        nextScreenRouteName: 'Home',
+      }));
     } catch (error) {
       console.error(`file: src/screens/SchedulingDetails\nfunction: handleConfirmRental\nerror: ${error as string}`);
       Alert.alert('Não foi possível alugar o carro.');
