@@ -8,6 +8,8 @@ import { Bullet } from '../../../components/Bullet';
 import { PasswordInput } from '../../../components/PasswordInput';
 import { Button } from '../../../components/Button';
 
+import { api } from '../../../services/api';
+
 import {
   Container,
   Header,
@@ -38,23 +40,35 @@ export function SignUpSecondStep() {
 
   function handleGoBack() {
     navigation.goBack();
-  }
+  };
 
-  function handleRegister() {
+  async function handleRegister() {
     if(!password || !confirmPassword) {
       return Alert.alert('Oops', 'É necessário preencher os dois campos!')
-    }
+    };
 
     if(password !== confirmPassword) {
       return Alert.alert('Oops', 'As senhas precisam ser iguais.')
-    }
+    };
 
-    navigation.navigate('Confirmation', {
-      title: 'Conta criada!',
-      message: 'Agora é só fazer login\ne aproveitar',
-      nextScreenRouteName: 'SignIn'
+    await api.post('/users', {
+      name: user.name,
+      email: user.email,
+      driver_license: user.driverLicense,
+      password,
     })
-  }
+    .then(() => {
+      navigation.navigate('Confirmation', {
+        title: 'Conta criada!',
+        message: 'Agora é só fazer login\ne aproveitar',
+        nextScreenRouteName: 'SignIn'
+      });
+    })
+    .catch((error: any) => {
+      console.error(`file: src/screens/SignUp/SignUpSecondStep\nfunction: handleRegister\nerror: ${error.message}`);
+      Alert.alert('Oops!', 'Não foi possível criar a conta.');
+    });
+  };
 
   return(
     <KeyboardAvoidingView behavior="position" enabled>
