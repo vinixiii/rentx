@@ -11,43 +11,63 @@ import {
 } from './styles';
 
 interface IInputProps extends TextInputProps {
-  iconName: React.ComponentProps<typeof Feather>['name']
-}
+  iconName: React.ComponentProps<typeof Feather>['name'];
+  value?: string;
+};
 
 export function PasswordInput({
   iconName,
+  value,
   ...rest
 } : IInputProps) {
   const theme = useTheme();
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(true);  
+  
+  function handleInputFocus() {
+    setIsFocused(true);
+  };
+  
+  function handleInputBlur() {
+    setIsFocused(false);
+    setIsFilled(!!value);
+  };
 
   function handleChangePasswordVisibility() {
     setIsPasswordVisible(!isPasswordVisible);
-  }
+  };
 
   return(
     <Container>
-      <IconWrapper>
+      <IconWrapper isFocused={isFocused}>
         <Feather
           name={iconName}
           size={20}
-          color={theme.colors.text}
+          color={(isFocused || isFilled) ? theme.colors.main : theme.colors.text}
         />
       </IconWrapper>
 
       <TextInput
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
         secureTextEntry={isPasswordVisible}
+        isFocused={isFocused}
         {...rest}
       />
 
-      <VisibilityPasswordIconWrapper onPress={handleChangePasswordVisibility}>
-        <Feather
-          name={isPasswordVisible ? 'eye' : 'eye-off'}
-          size={18}
-          color={theme.colors.text}
-        />
-      </VisibilityPasswordIconWrapper>
+      <IconWrapper isFocused={isFocused}>
+        <VisibilityPasswordIconWrapper
+          onPress={handleChangePasswordVisibility}
+        >
+          <Feather
+            name={isPasswordVisible ? 'eye' : 'eye-off'}
+            size={18}
+            color={theme.colors.text}
+          />
+        </VisibilityPasswordIconWrapper>
+      </IconWrapper>
     </Container>
   );
 };

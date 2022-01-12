@@ -1,5 +1,10 @@
-import React from 'react';
-import { StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StatusBar,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard
+} from 'react-native';
 import { useTheme } from 'styled-components';
 
 import { Button } from '../../components/Button';
@@ -18,6 +23,9 @@ import {
 
 export function SignIn() {
   const theme = useTheme();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return(
     <KeyboardAvoidingView behavior="position" enabled>
@@ -48,11 +56,15 @@ export function SignIn() {
               placeholderTextColor={theme.colors.textDetail}
               keyboardType="email-address"
               autoCapitalize="none"
+              onChangeText={setEmail}
+              value={email}
             />
             <PasswordInput
               iconName="lock"
               placeholder="Senha"
               placeholderTextColor={theme.colors.textDetail}
+              onChangeText={setPassword}
+              value={password}
             />
           </Form>
 
