@@ -3,9 +3,11 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Alert
 } from 'react-native';
 import { useTheme } from 'styled-components';
+import * as yup from 'yup';
 
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
@@ -26,6 +28,30 @@ export function SignIn() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .required('O email é obrigatório.')
+      .email('Digite um email válido!'),
+    password: yup
+      .string()
+      .required('A senha é obrigatória.')
+  });
+
+  async function handleSignIn() {
+    try {
+      await schema.validate({ email, password });
+      Alert.alert('Opa', 'Deu certo');
+    } catch (error: any) {
+      if(error instanceof yup.ValidationError) {
+        Alert.alert('Opa', error.message);
+      } else {
+        console.error(`file: src/screens/SignIn\nfunction: handleSignIn\nerror: ${error as string}`);
+        Alert.alert('Oops!', error.message);
+      }
+    }
+  };
 
   return(
     <KeyboardAvoidingView behavior="position" enabled>
@@ -52,7 +78,7 @@ export function SignIn() {
           <Form>
             <Input
               iconName="mail"
-              placeholder="E-mail"
+              placeholder="Email"
               placeholderTextColor={theme.colors.textDetail}
               keyboardType="email-address"
               autoCapitalize="none"
@@ -72,8 +98,8 @@ export function SignIn() {
             <ButtonWrapper>
               <Button
                 title="Entrar"
-                onPress={() => {}}
-                isEnabled={false}
+                onPress={handleSignIn}
+                isEnabled={true}
                 isLoading={false}
               />
             </ButtonWrapper>
