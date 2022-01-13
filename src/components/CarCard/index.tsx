@@ -34,8 +34,8 @@ export function CarCard({ data, ...rest } : ICarCardProps) {
 
         <About>
           <Rent>
-            <Period>{data.rent.period}</Period>
-            <Price>{`R$ ${data.rent.price}`}</Price>
+            <Period>{data.period}</Period>
+            <Price>{`R$ ${data.price}`}</Price>
           </Rent>
 
           <Type>
