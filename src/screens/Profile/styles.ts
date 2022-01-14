@@ -8,7 +8,6 @@ interface IOptionProps {
 }
 
 export const Container = styled(GestureHandlerRootView)`
-  flex: 1;
   background-color: ${({ theme }) => theme.colors.primaryBackground};
 `;
 
@@ -68,7 +67,6 @@ export const AddPhotoButton = styled(RectButton)`
 `;
 
 export const Content = styled.View`
-  flex: 1;
   padding: 0 24px;
   margin-top: ${RFValue(132)}px;
 `;
@@ -98,3 +96,5 @@ export const OptionTitle = styled.Text<IOptionProps>`
     ? theme.colors.title : theme.colors.textDetail
   };
 `;
+
+export const Section = styled.View``;
