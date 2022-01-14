@@ -43,7 +43,20 @@ export function Profile() {
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
   
   function handleSignOut() {
-    signOut();
+    Alert.alert(
+      'Tem certeza?',
+      'Lembre-se que se sair do app você precisará de internet para conectar-se novamente.',
+      [
+        { 
+          text: 'Cancelar',
+          onPress: () => {},
+        },
+        { 
+          text: 'Sair',
+          onPress: () => signOut(),
+        }
+      ]
+    );
   };
 
   function handleOptionChange(selectedOption: 'dataEdit' | 'passwordEdit') {
@@ -111,7 +124,7 @@ export function Profile() {
             backgroundColor="transparent"
             translucent
           />
-          
+
           <Header>
             <HeaderTop>
               <HeaderTitle>Editar perfil</HeaderTitle>
