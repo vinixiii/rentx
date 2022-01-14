@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
+  StatusBar,
   TouchableWithoutFeedback
 } from 'react-native';
 import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
+import * as yup from 'yup';
 
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
+import { Button } from '../../components/Button';
 import { useAuth } from '../../hooks/auth';
 
 import {
@@ -31,13 +35,12 @@ import {
 
 export function Profile() {
   const theme = useTheme();
-  const { user, signOut } = useAuth();
+  const { user, signOut, updateUser } = useAuth();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
-
   
   function handleSignOut() {
     signOut();
@@ -64,10 +67,51 @@ export function Profile() {
     }
   }
 
+  async function handleProfileUpdate() {
+    try {
+      const schema = yup.object().shape({
+        driverLicense: yup
+          .string()
+          .required('A CNH é obrigatória.'),
+        name: yup
+          .string()
+          .required('O nome é obrigatório.'),
+      });
+
+      const data = { name, driverLicense };
+      await schema.validate(data);
+      
+      await updateUser({
+        id: user.id,
+        user_id: user.user_id,
+        email: user.email,
+        name,
+        driver_license: driverLicense,
+        avatar,
+        token: user.token
+      });
+
+      Alert.alert('Alterações salvas!', 'Seu perfil foi alterado com sucesso.');
+    } catch (error) {
+      if(error instanceof yup.ValidationError) {
+        Alert.alert('Oops!', error.message);
+      } else {
+        console.error(`file: src/screens/Profile\nfunction: handleProfileUpdate\nerror: ${error as string}`);
+        Alert.alert('Não foi possível atualizar o perfil.');
+      }
+    }
+  }
+
   return(
     <KeyboardAvoidingView behavior="position" enabled>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor="transparent"
+            translucent
+          />
+          
           <Header>
             <HeaderTop>
               <HeaderTitle>Editar perfil</HeaderTitle>
@@ -158,6 +202,11 @@ export function Profile() {
                 </Section>
               )
             }
+
+            <Button
+              title="Salvar alterações"
+              onPress={handleProfileUpdate}
+            />
           </Content>
         </Container>
       </TouchableWithoutFeedback>
