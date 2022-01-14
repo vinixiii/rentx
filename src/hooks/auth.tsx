@@ -31,6 +31,7 @@ interface ISignInCredentials {
 interface IAuthContextData {
   user: IUser;
   signIn: (credentials: ISignInCredentials) => Promise<void>;
+  signOut: () => Promise<void>;
 };
 
 interface IAuthProviderProps {
@@ -71,6 +72,21 @@ function AuthProvider({ children } : IAuthProviderProps) {
     }    
   };
 
+  async function signOut() {
+    try {
+      const userCollection = await database.get<User>('users');
+
+      await database.write(async () => {
+        const selectedUser = await userCollection.find(data.id);
+        await selectedUser.destroyPermanently();
+      });
+
+      setData({} as IUser);
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  };
+
   useEffect(() => {
     async function loadUserData() {
       const userCollection = database.get<User>('users');
@@ -87,7 +103,7 @@ function AuthProvider({ children } : IAuthProviderProps) {
   })
 
   return (
-    <AuthContext.Provider value={{ user: data, signIn }}>
+    <AuthContext.Provider value={{ user: data, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

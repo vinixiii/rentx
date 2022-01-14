@@ -31,7 +31,7 @@ import {
 
 export function Profile() {
   const theme = useTheme();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
@@ -40,7 +40,7 @@ export function Profile() {
 
   
   function handleSignOut() {
-    console.log('Oi');
+    signOut();
   };
 
   function handleOptionChange(selectedOption: 'dataEdit' | 'passwordEdit') {
