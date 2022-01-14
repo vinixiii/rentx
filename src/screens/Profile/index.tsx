@@ -7,6 +7,7 @@ import {
 import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import * as ImagePicker from 'expo-image-picker';
 
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
@@ -33,6 +34,10 @@ export function Profile() {
   const { user } = useAuth();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [name, setName] = useState(user.name);
+  const [driverLicense, setDriverLicense] = useState(user.driver_license);
+
   
   function handleSignOut() {
     console.log('Oi');
@@ -41,6 +46,23 @@ export function Profile() {
   function handleOptionChange(selectedOption: 'dataEdit' | 'passwordEdit') {
     setOption(selectedOption);
   };
+
+  async function handleAvatarSelect() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if(result.cancelled) {
+      return;
+    }
+
+    if(result.uri) {
+      setAvatar(result.uri);
+    }
+  }
 
   return(
     <KeyboardAvoidingView behavior="position" enabled>
@@ -59,8 +81,8 @@ export function Profile() {
             </HeaderTop>
 
             <PhotoContainer>
-              <Photo source={{ uri: 'https://github.com/vinixiii.png' }} />
-              <AddPhotoButton onPress={handleSignOut}>
+              { !!avatar && <Photo source={{ uri: avatar }} /> }
+              <AddPhotoButton onPress={handleAvatarSelect}>
                 <Feather
                   name="camera"
                   size={24}
@@ -94,15 +116,12 @@ export function Profile() {
                     placeholder="Nome"
                     placeholderTextColor={theme.colors.textDetail}
                     defaultValue={user.name}
-                    // onChangeText={setName}
-                    // value={name}
+                    onChangeText={setName}
                   />
                   <Input
                     iconName="mail"
                     editable={false}
                     defaultValue={user.email}
-                    // onChangeText={setEmail}
-                    // value={email}
                   />
                   <Input
                     iconName="credit-card"
@@ -110,8 +129,7 @@ export function Profile() {
                     placeholderTextColor={theme.colors.textDetail}
                     keyboardType="numeric"
                     defaultValue={user.driver_license}
-                    // onChangeText={setDriverLicense}
-                    // value={driverLicense}
+                    onChangeText={setDriverLicense}
                   />
                 </Section>
               ) : (

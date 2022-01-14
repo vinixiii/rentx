@@ -43,7 +43,7 @@ export const PhotoContainer = styled.View`
   width: ${RFValue(185)}px;
   height: ${RFValue(185)}px;
   border-radius: ${RFValue(90)}px;
-  background-color: ${({ theme }) => theme.colors.primaryBackground};
+  background-color: ${({ theme }) => theme.colors.shape};
   margin-top: ${RFValue(48)}px;
   align-items: center;
   justify-content: center;
