@@ -3,6 +3,7 @@ declare namespace ReactNavigation {
   type IMarkedDateProps = import('../../../components/Calendar').IMarkedDateProps;
   type ISignUpSecondStepParams = import('../../../screens/SignUp/SignUpSecondStep').ISignUpSecondStepParams;
   type IConfirmationParams = import('../../../screens/Confirmation').IConfirmationParams;
+  type CarModel = import('../../../database/models/Car').Car;
 
   export interface RootParamList {
     SignIn: undefined;
@@ -10,7 +11,7 @@ declare namespace ReactNavigation {
     SignUpSecondStep: ISignUpSecondStepParams;
     Home: undefined;
     MyCars: undefined;
-    CarDetails: { car: ICarDTO } | undefined;
+    CarDetails: { car: CarModel } | undefined;
     Scheduling: { car: ICarDTO } | undefined;
     SchedulingDetails: { car: ICarDTO, dates: string[] } | undefined;
     Confirmation: IConfirmationParams;

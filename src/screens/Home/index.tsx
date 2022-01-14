@@ -11,12 +11,16 @@ import Animated, {
   useAnimatedGestureHandler,
   withSpring
 } from 'react-native-reanimated';
+import { useNetInfo } from '@react-native-community/netinfo';
+import { synchronize } from '@nozbe/watermelondb/sync';
+import { database } from '../../database';
 
 import { CarCard } from '../../components/CarCard';
 import { AnimatedLoading } from '../../components/AnimatedLoading';
 
 import { api } from '../../services/api';
 import { ICarDTO } from '../../dtos/ICarDTO';
+import { Car as CarModel } from '../../database/models/Car';
 
 import Logo from '../../assets/logo.svg';
 
@@ -27,17 +31,17 @@ import {
   TotalCars,
   CarList
 } from './styles';
+import areIntervalsOverlapping from 'date-fns/areIntervalsOverlapping/index';
 
 const AnimatedButton = Animated.createAnimatedComponent(RectButton);
 
 export function Home() {
   const theme = useTheme();
   const navigation = useNavigation();
-
-  
+  const netInfo = useNetInfo();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [carList, setCarList] = useState<ICarDTO[]>([]);
+  const [carList, setCarList] = useState<CarModel[]>([]);
 
   const positionX = useSharedValue(0);
   const positionY = useSharedValue(0);
@@ -66,7 +70,7 @@ export function Home() {
     }
   });
 
-  function handleShowCarDetails(car: ICarDTO) {
+  function handleShowCarDetails(car: CarModel) {
     navigation.navigate('CarDetails', { car });
   };
 
@@ -74,12 +78,32 @@ export function Home() {
     navigation.navigate('MyCars');
   };
 
+  async function offlineSync() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const { data } = await api
+        .get(`/cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
+
+        const { changes, latestVersion } = data;
+
+        return { changes, timestamp: latestVersion};
+      },
+      pushChanges: async ({ changes }) => {
+        const user = changes.users;
+        await api.post('/users/sync', user);
+      }
+    });
+  }
+
   useEffect(() => {
     async function getCars() {
       setIsLoading(true);
       try {
-        const response = await api.get('/cars');
-        setCarList(response.data);
+        const carCollection = database.get<CarModel>('cars')
+        const cars = await carCollection.query().fetch();
+
+        setCarList(cars);
       } catch (error) {
         console.error(`file: src/screens/Home\nfunction: getCars\nerror: ${error as string}`);
         Alert.alert('Não foi possível listar os carros');
@@ -95,6 +119,12 @@ export function Home() {
     e.preventDefault();
     return;
   }), [navigation]);
+
+  useEffect(() => {
+    if(netInfo.isConnected) {
+      offlineSync();
+    }
+  }, [netInfo.isConnected]);
 
   return(
     <Container>

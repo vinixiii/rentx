@@ -3,7 +3,7 @@ import { FlatList, FlatListProps } from 'react-native';
 import { GestureHandlerRootView, RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-import { ICarDTO } from '../../dtos/ICarDTO';
+import { Car as CarModel } from '../../database/models/Car';
 
 export const Container = styled(GestureHandlerRootView)`
   flex: 1;
@@ -32,7 +32,7 @@ export const TotalCars = styled.Text`
 `;
 
 export const CarList = styled(
-  FlatList as new (props: FlatListProps<ICarDTO>) => FlatList<ICarDTO>
+  FlatList as new (props: FlatListProps<CarModel>) => FlatList<CarModel>
 ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
