@@ -17,6 +17,7 @@ import {
   Type,
   CarImage
 } from './styles';
+import theme from '../../global/styles/theme';
 
 interface ICarCardProps extends RectButtonProps {
   data: CarModel;
@@ -41,7 +42,7 @@ export function CarCard({ data, ...rest } : ICarCardProps) {
           </Rent>
 
           <Type>
-            <MotorIcon />
+            <MotorIcon fill={theme.colors.textDetail} />
           </Type>
         </About>
       </Details>
