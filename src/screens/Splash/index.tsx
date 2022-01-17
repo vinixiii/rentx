@@ -15,6 +15,7 @@ import LogoSvg from '../../assets/logo.svg';
 import {
   Container
 } from './styles';
+import { StatusBar } from 'react-native';
 
 export function Splash() {
   const navigation = useNavigation();
@@ -62,6 +63,12 @@ export function Splash() {
 
   return(
     <Container>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+
       <Animated.View style={[brandStyle, { position: 'absolute' }]}>
         <BrandSvg width={80} height={80} />
       </Animated.View>

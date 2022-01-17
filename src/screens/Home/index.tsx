@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
-import { Alert, StatusBar, StyleSheet, BackHandler } from 'react-native';
+import { Alert, StatusBar, StyleSheet } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { useNavigation, CommonActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
@@ -19,7 +19,6 @@ import { CarCard } from '../../components/CarCard';
 import { AnimatedLoading } from '../../components/AnimatedLoading';
 
 import { api } from '../../services/api';
-import { ICarDTO } from '../../dtos/ICarDTO';
 import { Car as CarModel } from '../../database/models/Car';
 
 import Logo from '../../assets/logo.svg';
@@ -31,7 +30,6 @@ import {
   TotalCars,
   CarList
 } from './styles';
-import areIntervalsOverlapping from 'date-fns/areIntervalsOverlapping/index';
 
 const AnimatedButton = Animated.createAnimatedComponent(RectButton);
 
@@ -91,7 +89,9 @@ export function Home() {
       },
       pushChanges: async ({ changes }) => {
         const user = changes.users;
-        await api.post('/users/sync', user);
+        await api.post('/users/sync', user).catch((error: any) => {
+          console.error(`file: src/screens/Home\nfunction: pushChanges\nerror: ${error.message}`);
+        });
       }
     });
   }
