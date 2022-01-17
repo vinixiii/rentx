@@ -22,22 +22,13 @@ export const CarImages = styled.View`
   margin-top: ${getStatusBarHeight() + 32}px;
 `;
 
-export const Content = styled.ScrollView.attrs({
-  showsVerticalScrollIndicator: false,
-  contentContainerStyle: {
-    padding: 24,
-    alignItems: 'center',
-  },
-})`
-
-`;
-
 export const Details = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin-top: 38px;
+  padding-horizontal: 24px;
 `;
 
 export const Description = styled.View``;
@@ -80,6 +71,7 @@ export const About = styled.Text`
   line-height: ${RFValue(25)}px;
   margin-top: 24px;
   margin-bottom: 38px;
+  padding-horizontal: 24px;
 `;
 
 export const Accessories = styled.View`
@@ -90,10 +82,23 @@ export const Accessories = styled.View`
   justify-content: space-between;
   margin-top: 16px;
   margin-right: -12px;
+  padding-horizontal: 24px;
 `;
 
 export const Footer = styled.View`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.secondaryBackground};
   padding: 24px 24px ${getBottomSpace() + 24}px;
+`;
+
+export const OfflineInfo = styled.Text`
+  width: 100%;
+  font-family: ${({ theme }) => theme.fonts.primary500};
+  font-size: ${RFValue(12)}px;
+  color: ${({ theme }) => theme.colors.shape};
+  background-color: ${({ theme }) => theme.colors.main};
+  text-align: center;
+  padding: 4px;
+  /* line-height: ${RFValue(25)}px; */
+  margin-top: ${RFValue(12)}px;
 `;
