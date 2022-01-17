@@ -30,6 +30,7 @@ export function Confirmation() {
   const { title, message, nextScreenRouteName } = route.params as IConfirmationParams;
 
   function handleConfirm() {
+    console.log(nextScreenRouteName);
     navigation.navigate(nextScreenRouteName as any);
   }
 

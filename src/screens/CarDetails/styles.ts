@@ -99,6 +99,5 @@ export const OfflineInfo = styled.Text`
   background-color: ${({ theme }) => theme.colors.main};
   text-align: center;
   padding: 4px;
-  /* line-height: ${RFValue(25)}px; */
   margin-top: ${RFValue(12)}px;
 `;

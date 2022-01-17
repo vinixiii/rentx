@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import FastImage from 'react-native-fast-image';
 
 interface IImageIndexProps {
   active: boolean;
@@ -19,7 +20,7 @@ export const ImageIndexes = styled.View`
 export const ImageIndex = styled.View<IImageIndexProps>`
   width: 6px;
   height: 6px;
-  background-color: ${({ theme, active }) => 
+  background-color: ${({ theme, active }) =>
     active ? theme.colors.title : theme.colors.shape
   };
   margin-left: 8px;
@@ -33,7 +34,7 @@ export const CarImageWrapper = styled.View`
   align-items: center;
 `;
 
-export const CarImage = styled.Image`
+export const CarImage = styled(FastImage)`
   width: ${RFValue(280)}px;
   height: ${RFValue(132)}px;
 `;

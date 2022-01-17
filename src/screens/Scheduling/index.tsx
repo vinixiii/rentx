@@ -8,7 +8,7 @@ import { BackButton } from '../../components/BackButton';
 import { Calendar, IMarkedDateProps, IDateDataProps, generateInterval } from '../../components/Calendar';
 import { Button } from '../../components/Button';
 import { getPlatformDate } from '../../utils/getPlatformDate';
-import { ICarDTO } from '../../dtos/ICarDTO';
+import { Car as CarModel } from '../../database/models/Car';
 
 import ArrowSvg from '../../assets/arrow.svg';
 
@@ -34,7 +34,7 @@ interface IRentalPeriod {
 };
 
 interface IParams {
-  car: ICarDTO
+  car: CarModel
 }
 
 export function Scheduling() {

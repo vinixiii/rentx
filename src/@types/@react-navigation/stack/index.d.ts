@@ -12,8 +12,8 @@ declare namespace ReactNavigation {
     Home: undefined;
     MyCars: undefined;
     CarDetails: { car: CarModel } | undefined;
-    Scheduling: { car: ICarDTO } | undefined;
-    SchedulingDetails: { car: ICarDTO, dates: string[] } | undefined;
+    Scheduling: { car: CarModel } | undefined;
+    SchedulingDetails: { car: CarModel, dates: string[] } | undefined;
     Confirmation: IConfirmationParams;
   };
 };
