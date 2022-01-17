@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, FlatList, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
+import { format, parseISO } from 'date-fns';
 
 import { BackButton } from '../../components/BackButton';
 import { CarCard } from '../../components/CarCard';
 import { AnimatedLoading } from '../../components/AnimatedLoading';
 
 import { ICarDTO } from '../../dtos/ICarDTO';
+import { Car as CarModel } from '../../database/models/Car';
 import { api } from '../../services/api';
 
 import {
@@ -28,20 +30,20 @@ import {
   CarFooterDate
 } from './styles';
 
-interface ICarListProps {
-  user_id: string;
-  car: ICarDTO,
-  startDate: string,
-  endDate: string,
+interface IDataProps {
   id: string;
+  car: CarModel;
+  start_date: string,
+  end_date: string,
 };
 
 export function MyCars() {
   const theme = useTheme();
-  const navigation = useNavigation();  
+  const navigation = useNavigation();
+  const isScreenFocused = useIsFocused();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [myCars, setMyCars] = useState<ICarListProps[]>([]);
+  const [myCars, setMyCars] = useState<IDataProps[]>([]);
 
   function handleGoBack() {
     navigation.goBack();
@@ -50,8 +52,17 @@ export function MyCars() {
   useEffect(() => {
     async function getCars() {
       try {
-        const response = await api.get('schedules_byuser?user_id=1');
-        setMyCars(response.data);
+        const response = await api.get('/rentals');
+        const formattedData = response.data.map((data: IDataProps) => {
+          return {
+            id: data.id,
+            car: data.car,
+            start_date: format(parseISO(data.start_date), 'dd/MM/yyyy'),
+            end_date: format(parseISO(data.end_date), 'dd/MM/yyyy'),
+          }
+        });
+
+        setMyCars(formattedData);
       } catch (error) {
         console.error(`file: src/screens/MyCars\nfunction: getCars\nerror: ${error as string}`);
         Alert.alert('Não foi possível listar os carros');
@@ -61,7 +72,7 @@ export function MyCars() {
     }
 
     getCars();
-  }, []);
+  }, [isScreenFocused]);
 
   return(
     <Container>
@@ -105,7 +116,7 @@ export function MyCars() {
                   <CarFooter>
                     <CarFooterTitle>Período</CarFooterTitle>
                     <CarFooterPeriod>
-                      <CarFooterDate>{item.startDate}</CarFooterDate>
+                      <CarFooterDate>{item.start_date}</CarFooterDate>
                       
                       <AntDesign
                         name="arrowright"
@@ -114,7 +125,7 @@ export function MyCars() {
                         style={{ marginHorizontal: 10 }}
                       />
 
-                      <CarFooterDate>{item.endDate}</CarFooterDate>
+                      <CarFooterDate>{item.end_date}</CarFooterDate>
                     </CarFooterPeriod>
                   </CarFooter>
                 </CarsWrapper>
